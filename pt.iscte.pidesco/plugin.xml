@@ -36,5 +36,27 @@
             restorable="true">
       </view>
    </extension>
+   <extension
+         id="ide"
+         name="PIDESCO"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="pt.iscte.pidesco.app"
+            description="Pedagogical IDE for Software COmponents"
+            name="PIDESCO">
+         <property
+               name="appName"
+               value="PIDESCO">
+         </property>
+         <property
+               name="aboutText"
+               value="Pedagogical IDE for Software COmponents (ISCTE-IUL)">
+         </property>
+         <property
+               name="aboutImage"
+               value="iscde.png">
+         </property>
+      </product>
+   </extension>
 
 </plugin>
