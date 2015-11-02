@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="helloview"
+         name="My view"
+         point="pt.iscte.pidesco.view">
+      <view
+            class="pa.iscde.hello.TestView"
+            icon="smiley.png">
+      </view>
+   </extension>
+
+</plugin>
