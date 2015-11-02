@@ -65,10 +65,7 @@ public class ProjectBrowserView implements PidescoView {
 		filtersMap = new HashMap<String, ProjectBrowserView.Filter>();
 		activeFilters = new HashSet<String>();
 		loadFilters();
-		
-	    BundleContext context = FrameworkUtil.getBundle(ProjectBrowserListener.class).getBundleContext();
-	    ServiceReference<PidescoServices> ref = context.getServiceReference(PidescoServices.class);
-	    services = context.getService(ref);
+		services = ProjectBrowserActivator.getInstance().getPidescoServices();
 	}
 	
 	private void loadFilters() {
