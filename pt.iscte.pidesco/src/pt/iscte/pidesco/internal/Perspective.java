@@ -24,11 +24,8 @@ public class Perspective implements IPerspectiveFactory {
 			else
 				relative = PidescoServices.VIEW_ID + ":" + relative;
 
-//			layout.addView(view, match(loc.getPosition()), new Float(loc.getRatio()), relative);
 			layout.addStandaloneView(view, true, match(loc.getPosition()), new Float(loc.getRatio()), relative);
 		}
-		//		List<ViewLayout> = PidescoActivator.getInstance().getLayout();
-		//		playout.
 	}
 
 	private static int match(ViewLocation.Position p) {

@@ -117,9 +117,8 @@ public class PidescoActivator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		services = new PidescoServicesImpl(context);
+		services = new PidescoServicesImpl();
 		context.registerService(PidescoServices.class, services, null);
-		loadPlugins();
 	}
 
 	public void stop(BundleContext context) throws Exception {
@@ -143,6 +142,13 @@ public class PidescoActivator extends AbstractUIPlugin {
 	}
 	
 	public Collection<ViewComponent> getComponents() {
+		if(components == null)
+			try {
+				loadPlugins();
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+		
 		return Collections.unmodifiableCollection(components.values());
 	}
 
@@ -165,22 +171,5 @@ public class PidescoActivator extends AbstractUIPlugin {
 		else
 			return viewLocations;
 	}
-
-//	private String activeViewId;
-//	
-//	public String getActiveViewId() {
-//		return activeViewId;
-//	}
-
-//	@Override
-//	public void partActivated(IWorkbenchPartReference partRef) {
-//		if(partRef instanceof IViewReference)
-//			activeViewId = ((IViewReference) partRef).getSecondaryId();
-//		else if(partRef instanceof IEditorReference)
-//			activeViewId = ((IEditorReference) partRef).getId();
-//		System.out.println("activated: " + activeViewId);
-//	}
-
-	
 	
 }

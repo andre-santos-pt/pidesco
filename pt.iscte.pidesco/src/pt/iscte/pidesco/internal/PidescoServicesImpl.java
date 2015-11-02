@@ -25,7 +25,7 @@ public class PidescoServicesImpl implements PidescoServices {
 
 	private Map<String, PidescoTool> tools;
 	
-	PidescoServicesImpl(BundleContext context) {
+	private void loadTools() {
 		tools = new HashMap<String, PidescoTool>();
 		
 		for(IExtension ext : PidescoExtensionPoint.TOOL.getExtensions()) {
@@ -87,6 +87,10 @@ public class PidescoServicesImpl implements PidescoServices {
 	@Override
 	public void runTool(String toolId, boolean activate) {
 		Assert.isNotNull(toolId, "tool id cannot be null");
+		
+		if(tools == null)
+			loadTools();
+		
 		Assert.isTrue(tools.containsKey(toolId), "toolId '" + toolId + "' does not exist");
 		tools.get(toolId).run(activate);
 		
@@ -94,6 +98,7 @@ public class PidescoServicesImpl implements PidescoServices {
 
 	@Override
 	public void layout(List<ViewLocation> viewLocations) {
+		Assert.isNotNull(viewLocations, "list cannot be null");
 		PidescoActivator.getInstance().setLayout(viewLocations);
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().resetPerspective();
 	}
