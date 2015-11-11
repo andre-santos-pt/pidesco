@@ -1,7 +1,9 @@
 package pt.iscte.pidesco.extensibility;
 
+import java.io.File;
 import java.util.List;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.swt.graphics.Image;
 
 
@@ -54,5 +56,10 @@ public interface PidescoServices {
 	 * @param toolId tool id
 	 */
 	void runTool(String toolId, boolean activate);
-
+	
+	/**
+	 * Returns the workspace root directory.
+	 * @return non-null reference to a File object that matches a directory in the filesystem
+	 */
+	File getWorkspaceRoot();
 }

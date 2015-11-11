@@ -43,7 +43,7 @@
       <product
             application="pt.iscte.pidesco.app"
             description="Pedagogical IDE for Software COmponents"
-            name="PIDESCO">
+            name="Pidesco">
          <property
                name="appName"
                value="PIDESCO">

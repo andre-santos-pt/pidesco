@@ -128,6 +128,13 @@ public class PidescoActivator extends AbstractUIPlugin {
 	
 
 	ViewComponent getComponent(String viewId) {
+		if(components == null)
+			try {
+				loadPlugins();
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+		
 		return components.get(viewId);
 	}
 	

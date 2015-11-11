@@ -42,8 +42,6 @@ public class AbstractPidescoView extends ViewPart implements ISizeProvider {
 	public void init(IViewSite site) throws PartInitException {
 		super.init(site);
 		vcomponent = PidescoActivator.getInstance().getComponent(site.getSecondaryId());
-		IActionBars bars = getViewSite().getActionBars();
-		fillLocalToolBar(bars.getToolBarManager());
 	}
 
 	@Override
@@ -56,6 +54,8 @@ public class AbstractPidescoView extends ViewPart implements ISizeProvider {
 		parent.setLayout(new FillLayout());
 		Map<String, Image> imagesMap = Collections.unmodifiableMap(buildImageMap());
 		vcomponent.createContents(parent, imagesMap);
+		IActionBars bars = getViewSite().getActionBars();
+		fillLocalToolBar(bars.getToolBarManager());
 	}
 	
 	@Override

@@ -1,9 +1,11 @@
 package pt.iscte.pidesco.internal;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -14,7 +16,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.osgi.framework.BundleContext;
 
 import pt.iscte.pidesco.extensibility.PidescoExtensionPoint;
 import pt.iscte.pidesco.extensibility.PidescoServices;
@@ -102,6 +103,13 @@ public class PidescoServicesImpl implements PidescoServices {
 		PidescoActivator.getInstance().setLayout(viewLocations);
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().resetPerspective();
 	}
+	
+
+	@Override
+	public File getWorkspaceRoot() {
+		return new File(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString());
+	}
+
 
 	
 }

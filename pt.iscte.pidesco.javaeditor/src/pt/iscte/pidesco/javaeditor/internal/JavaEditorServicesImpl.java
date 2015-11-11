@@ -8,7 +8,6 @@ import java.util.Scanner;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.compiler.IProblem;
@@ -40,6 +39,12 @@ import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
 
 public class JavaEditorServicesImpl implements JavaEditorServices {
 
+	private File workspaceRoot;
+	
+	JavaEditorServicesImpl(File workspaceRoot) {
+		this.workspaceRoot = workspaceRoot;
+	}
+	
 	@Override
 	public File getOpenedFile() {
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
@@ -151,9 +156,9 @@ public class JavaEditorServicesImpl implements JavaEditorServices {
 		Assert.isNotNull(file, "file cannot be null");
 
 		ITextEditor editor = openEditor(file);
-		IDocumentProvider dp = editor.getDocumentProvider();
-		IDocument doc = dp.getDocument(editor.getEditorInput());
-		
+//		IDocumentProvider dp = editor.getDocumentProvider();
+//		IDocument doc = dp.getDocument(editor.getEditorInput());
+	
 		return ((ITextSelection) editor.getSelectionProvider().getSelection());
 	}
 	
@@ -211,8 +216,12 @@ public class JavaEditorServicesImpl implements JavaEditorServices {
 		Map options = JavaCore.getOptions();
 		JavaCore.setComplianceOptions(JavaCore.VERSION_1_7, options);
 		parser.setCompilerOptions(options);
+		parser.setResolveBindings(true);
+	    parser.setBindingsRecovery(true);
+	    parser.setEnvironment(null, new String[] {workspaceRoot.getAbsolutePath()}, new String[] {"UTF-8"}, true);
 		String src = readSource(file);
 		parser.setSource(src.toCharArray());
+		parser.setUnitName(getClassName(file.getAbsolutePath()));
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
 		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 		cu.accept(visitor);
@@ -220,6 +229,13 @@ public class JavaEditorServicesImpl implements JavaEditorServices {
 	}
 
 
+	private static String getClassName(String javaFilePath) {
+		String trim = javaFilePath.substring(0, javaFilePath.lastIndexOf('.'));
+		trim = trim.substring(trim.lastIndexOf(File.separatorChar)+1);
+		return trim;
+	}
+
+	
 	private String readSource(File file) {
 		StringBuilder src = new StringBuilder();
 		try {

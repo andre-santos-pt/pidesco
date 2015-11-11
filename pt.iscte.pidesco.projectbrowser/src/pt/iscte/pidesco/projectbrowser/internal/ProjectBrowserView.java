@@ -1,6 +1,5 @@
 package pt.iscte.pidesco.projectbrowser.internal;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
@@ -28,22 +26,16 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceReference;
 
-import pt.iscte.pidesco.extensibility.PidescoServices;
 import pt.iscte.pidesco.extensibility.PidescoView;
 import pt.iscte.pidesco.projectbrowser.extensibility.ProjectBrowserFilter;
-import pt.iscte.pidesco.projectbrowser.model.ClassElement;
 import pt.iscte.pidesco.projectbrowser.model.PackageElement;
 import pt.iscte.pidesco.projectbrowser.model.SourceElement;
 import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserListener;
 
 public class ProjectBrowserView implements PidescoView {
 
-	private static final String VIEW_ID = "pt.iscte.pidesco.projectbrowser.tree";
-	
+	public static final String VIEW_ID = "pt.iscte.pidesco.projectbrowser.tree";	
 	private static final String EXT_POINT_FILTER = "pt.iscte.pidesco.projectbrowser.filter";
 	
 	private static ProjectBrowserView instance;
@@ -51,22 +43,25 @@ public class ProjectBrowserView implements PidescoView {
 	private TreeViewer tree;
 	private PackageElement invisibleRoot;
 
-	private File rootPath;
-	
 	private Image packageIcon;
 	private Image classIcon;
 
 	private Map<String, Filter> filtersMap;
 	private Set<String> activeFilters;
 	
-	private static PidescoServices services;
 	
 	public ProjectBrowserView() {
+		instance = this;
 		filtersMap = new HashMap<String, ProjectBrowserView.Filter>();
 		activeFilters = new HashSet<String>();
 		loadFilters();
-		services = ProjectBrowserActivator.getInstance().getPidescoServices();
+		invisibleRoot = ProjectBrowserActivator.getInstance().getRoot();
 	}
+	
+	public static ProjectBrowserView getInstance() {
+		return instance;
+	}
+	
 	
 	private void loadFilters() {
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
@@ -83,9 +78,6 @@ public class ProjectBrowserView implements PidescoView {
 		}
 	}
 
-	public PackageElement getRootPackage() {
-		return invisibleRoot;
-	}
 	
 	public void activateFilter(String id) {
 		if(filtersMap.containsKey(id)) {
@@ -111,8 +103,6 @@ public class ProjectBrowserView implements PidescoView {
 	
 	@Override
 	public void createContents(Composite viewArea, Map<String, Image> images) {
-		instance = this;
-		rootPath = new File(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString());
 		packageIcon = images.get("package.gif");
 		classIcon = images.get("class.gif");
 		tree = new TreeViewer(viewArea, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -127,7 +117,7 @@ public class ProjectBrowserView implements PidescoView {
 	public void refresh() {
 		Object[] expanded = tree.getExpandedElements();
 
-		invisibleRoot = scan(rootPath);
+		invisibleRoot = ProjectBrowserActivator.getInstance().getRoot();
 		tree.setInput(invisibleRoot);
 		
 		if(!activeFilters.isEmpty())
@@ -138,12 +128,6 @@ public class ProjectBrowserView implements PidescoView {
 	}
 
 
-	public static ProjectBrowserView getInstance() {
-		if(instance == null)
-			services.openView(VIEW_ID);
-			
-		return instance;
-	}
 	
 
 
@@ -199,26 +183,26 @@ public class ProjectBrowserView implements PidescoView {
 	}
 
 
-	private static PackageElement scan(File root) {
-		PackageElement pack = new PackageElement(null, "", root);
-		for(File child : root.listFiles()) {
-			if(!child.getName().startsWith("."))
-				scanRec(child, pack);
-		}
-		return pack;
-	}
-
-	private static void scanRec(File f, PackageElement p) {
-		if(f.isFile() && f.getName().endsWith(".java")) {
-			new ClassElement(p, f);
-		}
-		else if(f.isDirectory()) {
-			PackageElement childPack = new PackageElement(p, f.getName(), f);
-			for(File child : f.listFiles()) {
-				scanRec(child, childPack);
-			}
-		}
-	}
+//	private static PackageElement scan(File root) {
+//		PackageElement pack = new PackageElement(null, "", root);
+//		for(File child : root.listFiles()) {
+//			if(!child.getName().startsWith("."))
+//				scanRec(child, pack);
+//		}
+//		return pack;
+//	}
+//
+//	private static void scanRec(File f, PackageElement p) {
+//		if(f.isFile() && f.getName().endsWith(".java")) {
+//			new ClassElement(p, f);
+//		}
+//		else if(f.isDirectory()) {
+//			PackageElement childPack = new PackageElement(p, f.getName(), f);
+//			for(File child : f.listFiles()) {
+//				scanRec(child, childPack);
+//			}
+//		}
+//	}
 
 
 	class ViewLabelProvider extends LabelProvider {
