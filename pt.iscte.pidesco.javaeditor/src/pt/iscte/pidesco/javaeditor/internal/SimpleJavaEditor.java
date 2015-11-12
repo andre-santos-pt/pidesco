@@ -83,7 +83,8 @@ public class SimpleJavaEditor extends TextEditor {
 		for(IProblem p : services.parseFile(f, new ASTVisitor(){})) {
 			int offset = p.getSourceStart();
 			int length = p.getSourceEnd() - p.getSourceStart() + 1;
-			services.addAnnotation(f, AnnotationType.ERROR, p.getMessage(), offset, length);
+			System.out.println(p.getSourceLineNumber() + " " + p.getSourceStart() + " " + p.getSourceEnd());
+			services.addAnnotation(f, p.isError() ? AnnotationType.ERROR : AnnotationType.WARNING, p.getMessage(), offset, length);
 		}
 	}
 

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
@@ -113,8 +114,14 @@ public class ProjectBrowserView implements PidescoView {
 		addSelectionListener();
 		refresh();
 	}
+	
+	boolean isCreated() {
+		return tree != null;
+	}
 
 	public void refresh() {
+		Assert.isTrue(isCreated());
+		
 		Object[] expanded = tree.getExpandedElements();
 
 		invisibleRoot = ProjectBrowserActivator.getInstance().getRoot();

@@ -21,7 +21,6 @@ import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 
-import pt.iscte.pidesco.extensibility.PidescoServices;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorListener;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
 import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserListener;
@@ -185,7 +184,6 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 
 	@Override
 	public void partInputChanged(IWorkbenchPartReference partRef) {
-		System.out.println("* " + partRef);
 		
 	}
 
