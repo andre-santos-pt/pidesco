@@ -1,30 +1,20 @@
 package pt.iscte.pidesco.javaeditor.internal;
 
 
-//import static org.eclipse.ui.texteditor.AbstractDecoratedTextEditor.PRINT_MARGIN;
-//import static org.eclipse.ui.texteditor.AbstractDecoratedTextEditor.PRINT_MARGIN_COLOR;
-//import static org.eclipse.ui.texteditor.AbstractDecoratedTextEditor.PRINT_MARGIN_COLUMN;
 
 import java.io.File;
 import java.util.Iterator;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jdt.core.IRegion;
 import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IPropertyListener;
-import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.editors.text.TextEditor;
@@ -83,7 +73,6 @@ public class SimpleJavaEditor extends TextEditor {
 		for(IProblem p : services.parseFile(f, new ASTVisitor(){})) {
 			int offset = p.getSourceStart();
 			int length = p.getSourceEnd() - p.getSourceStart() + 1;
-			System.out.println(p.getSourceLineNumber() + " " + p.getSourceStart() + " " + p.getSourceEnd());
 			services.addAnnotation(f, p.isError() ? AnnotationType.ERROR : AnnotationType.WARNING, p.getMessage(), offset, length);
 		}
 	}

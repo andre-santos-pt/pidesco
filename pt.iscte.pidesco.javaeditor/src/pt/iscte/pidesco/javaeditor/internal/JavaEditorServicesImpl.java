@@ -264,7 +264,6 @@ public class JavaEditorServicesImpl implements JavaEditorServices {
 		ann.setText(text);
 		ann.setType(type.ID);
 		amodel.addAnnotation(ann, new Position(offset, length));
-		System.out.println("Ann " + offset + " " + length);
 	}
 
 
