@@ -6,7 +6,7 @@
          <meta.schema plugin="pt.iscte.pidesco" id="pt.iscte.pidesco.tool" name="Pidesco Tool"/>
       </appinfo>
       <documentation>
-         [Enter description of this extension point.]
+         A tool in the toolbar of a certain Pidesco view. 
       </documentation>
    </annotation>
 

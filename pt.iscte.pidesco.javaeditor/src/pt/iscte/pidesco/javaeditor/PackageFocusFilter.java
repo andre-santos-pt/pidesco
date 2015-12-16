@@ -37,6 +37,11 @@ public class PackageFocusFilter implements ProjectBrowserFilter {
 
 	@Override
 	public boolean include(SourceElement element, PackageElement parent) {
+		if(file == null)
+			file = services.getOpenedFile();
+		if(file == null)
+			return true;
+		
 		if(element.isPackage() && file != null && ((PackageElement) element).hasChild(file, true))
 			return true;
 		else if (element.isClass() && parent.hasChild(file, false))

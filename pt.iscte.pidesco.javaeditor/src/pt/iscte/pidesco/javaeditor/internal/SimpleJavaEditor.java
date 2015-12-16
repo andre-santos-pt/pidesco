@@ -91,4 +91,11 @@ public class SimpleJavaEditor extends TextEditor {
 			amodel.removeAnnotation(a);
 		}
 	}
+	
+//	@Override
+//	protected void handleCursorPositionChanged() {
+//		
+//		System.out.println("cursor changed " + getCursorPosition());
+//		JavaEditorActivator.getInstance().notifySelectionChanged(getFile(), text, offset, length);
+//	}
 }

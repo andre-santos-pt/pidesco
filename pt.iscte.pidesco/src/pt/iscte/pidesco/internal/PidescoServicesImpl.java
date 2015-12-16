@@ -28,7 +28,6 @@ public class PidescoServicesImpl implements PidescoServices {
 	
 	private void loadTools() {
 		tools = new HashMap<String, PidescoTool>();
-		
 		for(IExtension ext : PidescoExtensionPoint.TOOL.getExtensions()) {
 			try {
 				PidescoTool tool = (PidescoTool) ext.getConfigurationElements()[0].createExecutableExtension("class");
@@ -43,6 +42,7 @@ public class PidescoServicesImpl implements PidescoServices {
 	@Override
 	public void openView(String viewId) {
 		Assert.isNotNull(viewId, "view id cannot be null");
+		PidescoExtensionPoint.VIEW.checkId(viewId);
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		try {
 			page.showView(PidescoServices.VIEW_ID, viewId, IWorkbenchPage.VIEW_ACTIVATE);
@@ -50,17 +50,6 @@ public class PidescoServicesImpl implements PidescoServices {
 			e.printStackTrace();
 		}
 	}
-	
-//	@Override
-//	public void closeView(String viewId) {
-//		Assert.isNotNull(viewId, "view id cannot be null");
-//		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-//		IViewPart view = page.findView(viewId);
-//		Assert.isNotNull(view, "view not found");
-//		page.hideView(view);
-//	}
-	
-	
 
 	@Override
 	public String getActiveView() {
@@ -88,11 +77,14 @@ public class PidescoServicesImpl implements PidescoServices {
 	@Override
 	public void runTool(String toolId, boolean activate) {
 		Assert.isNotNull(toolId, "tool id cannot be null");
-		
+		PidescoExtensionPoint.TOOL.checkId(toolId);
+
 		if(tools == null)
 			loadTools();
 		
-		Assert.isTrue(tools.containsKey(toolId), "toolId '" + toolId + "' does not exist");
+		if(!tools.containsKey(toolId))
+			throw new IllegalArgumentException("toolId '" + toolId + "' does not exist.");
+
 		tools.get(toolId).run(activate);
 		
 	}
