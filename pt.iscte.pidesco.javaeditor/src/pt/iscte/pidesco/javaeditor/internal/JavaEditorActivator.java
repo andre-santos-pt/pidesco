@@ -17,11 +17,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-<<<<<<< HEAD
-=======
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
->>>>>>> d01c6a8df9f8ec04d6e4740847456926063a7661
 import org.osgi.framework.ServiceReference;
 
 import pt.iscte.pidesco.javaeditor.service.JavaEditorListener;

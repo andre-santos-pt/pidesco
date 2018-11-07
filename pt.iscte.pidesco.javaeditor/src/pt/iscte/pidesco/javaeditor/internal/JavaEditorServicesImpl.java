@@ -158,11 +158,7 @@ public class JavaEditorServicesImpl implements JavaEditorServices {
 		ITextEditor editor = openEditor(file);
 //		IDocumentProvider dp = editor.getDocumentProvider();
 //		IDocument doc = dp.getDocument(editor.getEditorInput());
-<<<<<<< HEAD
-		
-=======
-	
->>>>>>> d01c6a8df9f8ec04d6e4740847456926063a7661
+
 		return ((ITextSelection) editor.getSelectionProvider().getSelection());
 	}
 	
