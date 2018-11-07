@@ -1,9 +1,11 @@
 package pt.iscte.pidesco.internal;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -14,7 +16,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.osgi.framework.BundleContext;
 
 import pt.iscte.pidesco.extensibility.PidescoExtensionPoint;
 import pt.iscte.pidesco.extensibility.PidescoServices;
@@ -25,9 +26,8 @@ public class PidescoServicesImpl implements PidescoServices {
 
 	private Map<String, PidescoTool> tools;
 	
-	PidescoServicesImpl(BundleContext context) {
+	private void loadTools() {
 		tools = new HashMap<String, PidescoTool>();
-		
 		for(IExtension ext : PidescoExtensionPoint.TOOL.getExtensions()) {
 			try {
 				PidescoTool tool = (PidescoTool) ext.getConfigurationElements()[0].createExecutableExtension("class");
@@ -42,6 +42,7 @@ public class PidescoServicesImpl implements PidescoServices {
 	@Override
 	public void openView(String viewId) {
 		Assert.isNotNull(viewId, "view id cannot be null");
+		PidescoExtensionPoint.VIEW.checkId(viewId);
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		try {
 			page.showView(PidescoServices.VIEW_ID, viewId, IWorkbenchPage.VIEW_ACTIVATE);
@@ -49,17 +50,6 @@ public class PidescoServicesImpl implements PidescoServices {
 			e.printStackTrace();
 		}
 	}
-	
-//	@Override
-//	public void closeView(String viewId) {
-//		Assert.isNotNull(viewId, "view id cannot be null");
-//		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-//		IViewPart view = page.findView(viewId);
-//		Assert.isNotNull(view, "view not found");
-//		page.hideView(view);
-//	}
-	
-	
 
 	@Override
 	public String getActiveView() {
@@ -87,16 +77,31 @@ public class PidescoServicesImpl implements PidescoServices {
 	@Override
 	public void runTool(String toolId, boolean activate) {
 		Assert.isNotNull(toolId, "tool id cannot be null");
-		Assert.isTrue(tools.containsKey(toolId), "toolId '" + toolId + "' does not exist");
+		PidescoExtensionPoint.TOOL.checkId(toolId);
+
+		if(tools == null)
+			loadTools();
+		
+		if(!tools.containsKey(toolId))
+			throw new IllegalArgumentException("toolId '" + toolId + "' does not exist.");
+
 		tools.get(toolId).run(activate);
 		
 	}
 
 	@Override
 	public void layout(List<ViewLocation> viewLocations) {
+		Assert.isNotNull(viewLocations, "list cannot be null");
 		PidescoActivator.getInstance().setLayout(viewLocations);
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().resetPerspective();
 	}
+	
+
+	@Override
+	public File getWorkspaceRoot() {
+		return new File(ResourcesPlugin.getWorkspace().getRoot().getLocation().toString());
+	}
+
 
 	
 }

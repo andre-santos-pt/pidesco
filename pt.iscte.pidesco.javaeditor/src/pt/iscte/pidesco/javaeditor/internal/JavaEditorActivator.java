@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IEditorInput;
@@ -16,6 +17,11 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.FileStoreEditorInput;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+<<<<<<< HEAD
+=======
+import org.osgi.framework.ServiceEvent;
+import org.osgi.framework.ServiceListener;
+>>>>>>> d01c6a8df9f8ec04d6e4740847456926063a7661
 import org.osgi.framework.ServiceReference;
 
 import pt.iscte.pidesco.javaeditor.service.JavaEditorListener;
@@ -28,15 +34,10 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 	private static JavaEditorActivator instance;
 
 	private BundleContext context;
-	
 	private ProjectBrowserListener listener;
-
 	private Set<JavaEditorListener> listeners;
-
 	private ProjectBrowserServices browser;
-	
 	private JavaEditorServices services;
-	
 
 	private ISelectionListener selectionListener;
 	
@@ -54,29 +55,31 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 	}
 
 	public void addListener(JavaEditorListener l) {
+		Assert.isNotNull(l);
 		listeners.add(l);
 	}
 
 	public void removeListener(JavaEditorListener l) {
+		Assert.isNotNull(l);
 		listeners.remove(l);
 	}
 
-	public void notityOpenFile(File file) {
+	void notityOpenFile(File file) {
 		for(JavaEditorListener l : listeners)
 			l.fileOpened(file);
 	}
 
-	public void notityClosedFile(File file) {
+	void notityClosedFile(File file) {
 		for(JavaEditorListener l : listeners)
 			l.fileClosed(file);
 	}
 	
-	public void notitySavedFile(File file) {
+	void notitySavedFile(File file) {
 		for(JavaEditorListener l : listeners)
 			l.fileSaved(file);
 	}
 	
-	public void notifySelectionChanged(File file, String text, int offset, int length) {
+	void notifySelectionChanged(File file, String text, int offset, int length) {
 		for(JavaEditorListener l : listeners)
 			l.selectionChanged(file, text, offset, length);
 	}
@@ -87,10 +90,21 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 		this.context = context;
 		final ServiceReference<ProjectBrowserServices> ref = context.getServiceReference(ProjectBrowserServices.class);
 		browser = context.getService(ref);
-		services = new JavaEditorServicesImpl();
+		
+		services = new JavaEditorServicesImpl(browser.getRootPackage().getFile());
 		listener = new OpenEditorListener(services);
 		browser.addListener(listener);
 		context.registerService(JavaEditorServices.class, services, null);
+		
+		context.addServiceListener(new ServiceListener() {	
+			@Override
+			public void serviceChanged(ServiceEvent event) {
+				if(event.getType() == ServiceEvent.REGISTERED) {
+					ProjectBrowserServices service = (ProjectBrowserServices) context.getService(event.getServiceReference());
+					service.addListener(listener);
+				}
+			}
+		}, "(objectClass="+ProjectBrowserServices.class.getName()+")");
 	}
 
 	@Override
@@ -134,8 +148,11 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 	
 	@Override
 	public void partBroughtToTop(IWorkbenchPartReference partRef) {
-		if(partRef.getId().equals(SimpleJavaEditor.EDITOR_ID))
-			notityOpenFile(getFile(partRef));
+		if(partRef.getId().equals(SimpleJavaEditor.EDITOR_ID)) {
+			File f = getFile(partRef);
+			notityOpenFile(f);
+		}
+			
 	}
 
 	@Override
@@ -170,7 +187,6 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 
 	@Override
 	public void partInputChanged(IWorkbenchPartReference partRef) {
-		// TODO Auto-generated method stub
 		
 	}
 

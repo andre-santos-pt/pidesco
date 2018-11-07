@@ -1,19 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2014 Andre L. Santos.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors:
- *     Andre L Santos - developer
- ******************************************************************************/
 package pt.iscte.pidesco.javaeditor.internal;
 
 
-//import static org.eclipse.ui.texteditor.AbstractDecoratedTextEditor.PRINT_MARGIN;
-//import static org.eclipse.ui.texteditor.AbstractDecoratedTextEditor.PRINT_MARGIN_COLOR;
-//import static org.eclipse.ui.texteditor.AbstractDecoratedTextEditor.PRINT_MARGIN_COLUMN;
 
 import java.io.File;
 import java.util.Iterator;
@@ -65,7 +52,7 @@ public class SimpleJavaEditor extends TextEditor {
 	@Override
 	protected void doSetInput(IEditorInput input) throws CoreException {
 		super.doSetInput(input);
-		compile();
+//		compile();
 	}
 
 	@Override
@@ -86,7 +73,7 @@ public class SimpleJavaEditor extends TextEditor {
 		for(IProblem p : services.parseFile(f, new ASTVisitor(){})) {
 			int offset = p.getSourceStart();
 			int length = p.getSourceEnd() - p.getSourceStart() + 1;
-			services.addAnnotation(f, AnnotationType.ERROR, p.getMessage(), offset, length);
+			services.addAnnotation(f, p.isError() ? AnnotationType.ERROR : AnnotationType.WARNING, p.getMessage(), offset, length);
 		}
 	}
 
@@ -104,4 +91,11 @@ public class SimpleJavaEditor extends TextEditor {
 			amodel.removeAnnotation(a);
 		}
 	}
+	
+//	@Override
+//	protected void handleCursorPositionChanged() {
+//		
+//		System.out.println("cursor changed " + getCursorPosition());
+//		JavaEditorActivator.getInstance().notifySelectionChanged(getFile(), text, offset, length);
+//	}
 }

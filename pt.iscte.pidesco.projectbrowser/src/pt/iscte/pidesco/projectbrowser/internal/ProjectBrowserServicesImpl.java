@@ -6,19 +6,24 @@ import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserServices;
 
 public class ProjectBrowserServicesImpl implements ProjectBrowserServices {
 
+	
 	public PackageElement getRootPackage() {
-		return ProjectBrowserView.getInstance().getRootPackage();
+		return ProjectBrowserActivator.getInstance().getRoot();
 	}
 	
 	public void refreshTree() {
+		ProjectBrowserActivator.getInstance().refreshWorkspace();
+		activateView();
 		ProjectBrowserView.getInstance().refresh();
 	}
 	
 	public void activateFilter(String id) {
+		activateView();
 		ProjectBrowserView.getInstance().activateFilter(id);
 	}
 	
 	public void deactivateFilter(String id) {
+		activateView();
 		ProjectBrowserView.getInstance().deactivateFilter(id);
 	}
 	
@@ -28,6 +33,10 @@ public class ProjectBrowserServicesImpl implements ProjectBrowserServices {
 	
 	public void removeListener(ProjectBrowserListener listener) {
 		ProjectBrowserActivator.getInstance().removeListener(listener);
+	}
+	
+	private void activateView() {
+		ProjectBrowserActivator.getInstance().getPidescoServices().openView(ProjectBrowserView.VIEW_ID);
 	}
 	
 }

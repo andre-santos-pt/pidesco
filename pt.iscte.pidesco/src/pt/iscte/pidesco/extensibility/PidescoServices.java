@@ -1,5 +1,6 @@
 package pt.iscte.pidesco.extensibility;
 
+import java.io.File;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Image;
@@ -50,9 +51,15 @@ public interface PidescoServices {
 	Image getImageFromPlugin(String pluginId, String fileName);
 	
 	/**
-	 * 
+	 * Runs a tool given its id.
 	 * @param toolId tool id
+	 * @param activate if true turns the tool active (if applicable, otherwise is ignored), false turns the tool inactive.
 	 */
 	void runTool(String toolId, boolean activate);
-
+	
+	/**
+	 * Returns the workspace root directory.
+	 * @return non-null reference to a File object that matches a directory in the filesystem
+	 */
+	File getWorkspaceRoot();
 }

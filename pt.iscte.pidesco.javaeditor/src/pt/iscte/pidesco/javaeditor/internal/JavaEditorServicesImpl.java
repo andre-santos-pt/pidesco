@@ -39,6 +39,12 @@ import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
 
 public class JavaEditorServicesImpl implements JavaEditorServices {
 
+	private File workspaceRoot;
+	
+	JavaEditorServicesImpl(File workspaceRoot) {
+		this.workspaceRoot = workspaceRoot;
+	}
+	
 	@Override
 	public File getOpenedFile() {
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
@@ -152,7 +158,11 @@ public class JavaEditorServicesImpl implements JavaEditorServices {
 		ITextEditor editor = openEditor(file);
 //		IDocumentProvider dp = editor.getDocumentProvider();
 //		IDocument doc = dp.getDocument(editor.getEditorInput());
+<<<<<<< HEAD
 		
+=======
+	
+>>>>>>> d01c6a8df9f8ec04d6e4740847456926063a7661
 		return ((ITextSelection) editor.getSelectionProvider().getSelection());
 	}
 	
@@ -210,8 +220,12 @@ public class JavaEditorServicesImpl implements JavaEditorServices {
 		Map<String,String> options = JavaCore.getOptions();
 		JavaCore.setComplianceOptions(JavaCore.VERSION_1_8, options);
 		parser.setCompilerOptions(options);
+		parser.setResolveBindings(true);
+	    parser.setBindingsRecovery(true);
+	    parser.setEnvironment(null, new String[] {workspaceRoot.getAbsolutePath()}, new String[] {"UTF-8"}, true);
 		String src = readSource(file);
 		parser.setSource(src.toCharArray());
+		parser.setUnitName(getClassName(file.getAbsolutePath()));
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
 		CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 		cu.accept(visitor);
@@ -219,6 +233,13 @@ public class JavaEditorServicesImpl implements JavaEditorServices {
 	}
 
 
+	private static String getClassName(String javaFilePath) {
+		String trim = javaFilePath.substring(0, javaFilePath.lastIndexOf('.'));
+		trim = trim.substring(trim.lastIndexOf(File.separatorChar)+1);
+		return trim;
+	}
+
+	
 	private String readSource(File file) {
 		StringBuilder src = new StringBuilder();
 		try {
@@ -262,9 +283,6 @@ public class JavaEditorServicesImpl implements JavaEditorServices {
 		Assert.isNotNull(listener, "argument cannot be null");
 		JavaEditorActivator.getInstance().removeListener(listener);
 	}
-
-
-
 
 
 }

@@ -18,6 +18,7 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISizeProvider;
 import org.eclipse.ui.IViewSite;
@@ -34,20 +35,25 @@ import pt.iscte.pidesco.internal.PidescoActivator.ViewComponent;
 public class AbstractPidescoView extends ViewPart implements ISizeProvider {
 
 	private static String IMAGES_FLODER_PATH = PidescoServices.IMAGES_FOLDER + "/";
-	
+
+	private String componentId;
 	private ViewComponent vcomponent;
 	private Composite parent;
-	
+
 	@Override
 	public void init(IViewSite site) throws PartInitException {
 		super.init(site);
-		vcomponent = PidescoActivator.getInstance().getComponent(site.getSecondaryId());
-		IActionBars bars = getViewSite().getActionBars();
-		fillLocalToolBar(bars.getToolBarManager());
+		componentId = site.getSecondaryId();
+		vcomponent = PidescoActivator.getInstance().getComponent(componentId);
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
+		if(vcomponent == null) {
+			new Label(parent, SWT.NONE).setText(componentId + " could not be loaded");
+			return;
+		}
+
 		this.parent = parent;
 		setPartName(vcomponent.viewTitle);
 		if(vcomponent.icon != null)
@@ -56,13 +62,16 @@ public class AbstractPidescoView extends ViewPart implements ISizeProvider {
 		parent.setLayout(new FillLayout());
 		Map<String, Image> imagesMap = Collections.unmodifiableMap(buildImageMap());
 		vcomponent.createContents(parent, imagesMap);
+		IActionBars bars = getViewSite().getActionBars();
+		fillLocalToolBar(bars.getToolBarManager());
 	}
-	
+
 	@Override
 	public void setFocus() {
-		parent.setFocus();
+		if(parent != null)
+			parent.setFocus();
 	}
-	
+
 
 	private Map<String, Image> buildImageMap() {
 		Map<String, Image> imagesMap = new HashMap<String, Image>();
@@ -124,12 +133,13 @@ public class AbstractPidescoView extends ViewPart implements ISizeProvider {
 	@Override
 	public void dispose() {
 		super.dispose();
-		try {
-			Platform.getBundle(vcomponent.pluginId).stop();
-		} catch (BundleException e) {
-			e.printStackTrace();
+		if(vcomponent != null) {
+			try {
+				Platform.getBundle(vcomponent.pluginId).stop();
+			} catch (BundleException e) {
+				e.printStackTrace();
+			}
 		}
-		
 	}
 
 	@Override
@@ -143,5 +153,5 @@ public class AbstractPidescoView extends ViewPart implements ISizeProvider {
 		System.out.println(availableParallel + " " + availablePerpendicular);
 		return 200;
 	}
-	
+
 }

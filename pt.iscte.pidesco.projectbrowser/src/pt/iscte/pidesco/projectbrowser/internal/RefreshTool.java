@@ -7,7 +7,11 @@ public class RefreshTool implements PidescoTool {
 
 	@Override
 	public void run(boolean selected) {
-		ProjectBrowserView.getInstance().refresh();
+		ProjectBrowserActivator.getInstance().refreshWorkspace();
+		
+		ProjectBrowserView browser = ProjectBrowserView.getInstance();
+		if(browser.isCreated())
+			browser.refresh();
 	}
 
 }
