@@ -33,12 +33,12 @@ public class JavaCodeScanner extends RuleBasedScanner {
 			"native", "super",	"while"};
 	
 	private static IToken comment = Common.createToken(TokenColor.COMMENT, false);
-	private static IToken javadoc = Common.createToken(TokenColor.COMMENT, true);
+//	private static IToken javadoc = Common.createToken(TokenColor.COMMENT, true);
 	private static IToken string = Common.createToken(TokenColor.STRING, false);
 	private static IToken character = Common.createToken(TokenColor.CHAR, false);
 	private static IToken keyword = Common.createToken(TokenColor.KEYWORD, true);
 	private static IToken number =  Common.createToken(TokenColor.NUMBER, true);
-	private static IToken id =  Common.createToken(TokenColor.ID, true);
+//	private static IToken id =  Common.createToken(TokenColor.ID, true);
 	private static IToken trueLit =  Common.createToken(TokenColor.TRUE, true);
 	private static IToken falseLit =  Common.createToken(TokenColor.FALSE, true);
 	private static IToken nullLit =  Common.createToken(TokenColor.NULL, true);

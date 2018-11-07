@@ -8,7 +8,6 @@ import java.util.Scanner;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.compiler.IProblem;
@@ -151,8 +150,8 @@ public class JavaEditorServicesImpl implements JavaEditorServices {
 		Assert.isNotNull(file, "file cannot be null");
 
 		ITextEditor editor = openEditor(file);
-		IDocumentProvider dp = editor.getDocumentProvider();
-		IDocument doc = dp.getDocument(editor.getEditorInput());
+//		IDocumentProvider dp = editor.getDocumentProvider();
+//		IDocument doc = dp.getDocument(editor.getEditorInput());
 		
 		return ((ITextSelection) editor.getSelectionProvider().getSelection());
 	}
@@ -207,9 +206,9 @@ public class JavaEditorServicesImpl implements JavaEditorServices {
 	@Override
 	public IProblem[] parseFile(File file, ASTVisitor visitor) {
 		Assert.isNotNull(file, "file cannot be null");
-		ASTParser parser = ASTParser.newParser(AST.JLS8);
-		Map options = JavaCore.getOptions();
-		JavaCore.setComplianceOptions(JavaCore.VERSION_1_7, options);
+		ASTParser parser = ASTParser.newParser(AST.JLS10);
+		Map<String,String> options = JavaCore.getOptions();
+		JavaCore.setComplianceOptions(JavaCore.VERSION_1_8, options);
 		parser.setCompilerOptions(options);
 		String src = readSource(file);
 		parser.setSource(src.toCharArray());

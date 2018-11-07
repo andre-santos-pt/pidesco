@@ -20,21 +20,14 @@ import java.util.Iterator;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jdt.core.IRegion;
 import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationModel;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.IVerticalRuler;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IPropertyListener;
-import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.editors.text.TextEditor;
@@ -105,7 +98,7 @@ public class SimpleJavaEditor extends TextEditor {
 
 	private void clearAnnotations() {
 		IAnnotationModel amodel = getDocumentProvider().getAnnotationModel(getEditorInput());
-		Iterator it = amodel.getAnnotationIterator();
+		Iterator<Annotation> it = amodel.getAnnotationIterator();
 		while(it.hasNext()) {
 			Annotation a = (Annotation) it.next();
 			amodel.removeAnnotation(a);

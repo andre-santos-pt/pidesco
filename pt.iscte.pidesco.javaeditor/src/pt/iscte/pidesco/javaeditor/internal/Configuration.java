@@ -51,7 +51,7 @@ public class Configuration extends SourceViewerConfiguration {
 			public String getHoverInfo(ISourceViewer sourceViewer, int lineNumber) {
 				IDocument doc = sourceViewer.getDocument();
 				String ret = "";
-				for(Iterator it = sourceViewer.getAnnotationModel().getAnnotationIterator(); it.hasNext(); ) {
+				for(Iterator<Annotation> it = sourceViewer.getAnnotationModel().getAnnotationIterator(); it.hasNext(); ) {
 					Annotation ann = (Annotation) it.next();
 					int offset = sourceViewer.getAnnotationModel().getPosition(ann).offset;					
 					try {

@@ -3,7 +3,6 @@ package pt.iscte.pidesco.javaeditor;
 import java.io.File;
 
 import pt.iscte.pidesco.javaeditor.internal.JavaEditorActivator;
-import pt.iscte.pidesco.javaeditor.internal.JavaEditorServicesImpl;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
 import pt.iscte.pidesco.projectbrowser.extensibility.ProjectBrowserFilter;
 import pt.iscte.pidesco.projectbrowser.model.PackageElement;

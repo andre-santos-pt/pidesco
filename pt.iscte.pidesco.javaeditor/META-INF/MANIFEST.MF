@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jdt.core;bundle-version="3.10.0",
  pt.iscte.pidesco.projectbrowser;bundle-version="0.1.0",
  pt.iscte.pidesco;bundle-version="0.1.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Automatic-Module-Name: pt.iscte.pidesco.javaeditor
 Bundle-Vendor: pt.iscte.dcti
 Export-Package: pt.iscte.pidesco.javaeditor.service
 Bundle-Activator: pt.iscte.pidesco.javaeditor.internal.JavaEditorActivator
