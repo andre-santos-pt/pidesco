@@ -42,9 +42,9 @@ public class SimpleJavaEditor extends TextEditor {
 	@Override
 	protected ISourceViewer createSourceViewer(Composite parent,
 			IVerticalRuler ruler, int styles) {
-		ISourceViewer sourceViewer=  super.createSourceViewer(parent, ruler, styles);
+		ISourceViewer sourceViewer = super.createSourceViewer(parent, ruler, styles);
 
-		fSourceViewerDecorationSupport= new SourceViewerDecorationSupport(sourceViewer, fOverviewRuler, fAnnotationAccess, getSharedColors());
+		fSourceViewerDecorationSupport = new SourceViewerDecorationSupport(sourceViewer, fOverviewRuler, fAnnotationAccess, getSharedColors());
 		super.configureSourceViewerDecorationSupport(fSourceViewerDecorationSupport);
 		return sourceViewer;
 	}

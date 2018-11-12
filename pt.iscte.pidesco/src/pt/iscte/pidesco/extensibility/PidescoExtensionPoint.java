@@ -1,7 +1,6 @@
 package pt.iscte.pidesco.extensibility;
 
 import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 import pt.iscte.pidesco.internal.PidescoActivator;
@@ -16,6 +15,7 @@ public enum PidescoExtensionPoint {
 		extensions = Platform.getExtensionRegistry()
 				.getExtensionPoint(getId()).getExtensions();
 	}
+	
 	public String getId() {
 		return PidescoActivator.PLUGIN_ID + "." + name().toLowerCase();
 	}

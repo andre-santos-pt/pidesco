@@ -21,6 +21,7 @@ import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 
+import pt.iscte.pidesco.extensibility.PidescoServices;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorListener;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
 import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserListener;
@@ -33,9 +34,8 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 	private BundleContext context;
 	private ProjectBrowserListener listener;
 	private Set<JavaEditorListener> listeners;
-	private ProjectBrowserServices browser;
+//	private ProjectBrowserServices browser;
 	private JavaEditorServices services;
-
 	private ISelectionListener selectionListener;
 	
 	
@@ -85,19 +85,19 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 	public void start(final BundleContext context) throws Exception {
 		instance = this;
 		this.context = context;
-		final ServiceReference<ProjectBrowserServices> ref = context.getServiceReference(ProjectBrowserServices.class);
-		browser = context.getService(ref);
 		
-		services = new JavaEditorServicesImpl(browser.getRootPackage().getFile());
-		listener = new OpenEditorListener(services);
-		browser.addListener(listener);
+		ServiceReference<PidescoServices> ref = context.getServiceReference(PidescoServices.class);
+		PidescoServices pidescoServices = context.getService(ref);
+		
+		services = new JavaEditorServicesImpl(pidescoServices.getWorkspaceRoot());
 		context.registerService(JavaEditorServices.class, services, null);
 		
 		context.addServiceListener(new ServiceListener() {	
 			@Override
 			public void serviceChanged(ServiceEvent event) {
+				ProjectBrowserServices service = (ProjectBrowserServices) context.getService(event.getServiceReference());
 				if(event.getType() == ServiceEvent.REGISTERED) {
-					ProjectBrowserServices service = (ProjectBrowserServices) context.getService(event.getServiceReference());
+					listener = new OpenEditorListener(services);
 					service.addListener(listener);
 				}
 			}
@@ -160,25 +160,21 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 
 	@Override
 	public void partDeactivated(IWorkbenchPartReference partRef) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void partOpened(IWorkbenchPartReference partRef) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void partHidden(IWorkbenchPartReference partRef) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void partVisible(IWorkbenchPartReference partRef) {
-		// TODO Auto-generated method stub
 		
 	}
 
