@@ -6,7 +6,6 @@ import org.osgi.framework.ServiceReference;
 import pt.iscte.pidesco.extensibility.PidescoServices;
 import pt.iscte.pidesco.extensibility.PidescoTool;
 import pt.iscte.pidesco.javaeditor.internal.JavaEditorActivator;
-import pt.iscte.pidesco.javaeditor.service.JavaEditorListener;
 import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserServices;
 
 public class PackageFocusTool implements PidescoTool {
@@ -14,7 +13,6 @@ public class PackageFocusTool implements PidescoTool {
 	private static final String FILTER_ID = "pt.iscte.pidesco.javaeditor.packagefocus";
 
 	private ProjectBrowserServices browser;
-//	private JavaEditorListener listener;
 	private PidescoServices services;
 	
 	public PackageFocusTool() {
@@ -31,12 +29,10 @@ public class PackageFocusTool implements PidescoTool {
 	public void run(boolean selected) {
 		if(selected) {
 			browser.activateFilter(FILTER_ID);
-//			JavaEditorActivator.getInstance().addListener(listener);
 			services.runTool(ProjectBrowserServices.REFRESH_TOOL_ID, true);
 		}
 		else {
 			browser.deactivateFilter(FILTER_ID);
-//			JavaEditorActivator.getInstance().removeListener(listener);
 			services.runTool(ProjectBrowserServices.REFRESH_TOOL_ID, true);
 		}
 	}

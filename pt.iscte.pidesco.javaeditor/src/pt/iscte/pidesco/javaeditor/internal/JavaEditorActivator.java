@@ -92,13 +92,22 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 		services = new JavaEditorServicesImpl(pidescoServices.getWorkspaceRoot());
 		context.registerService(JavaEditorServices.class, services, null);
 		
+		ServiceReference<ProjectBrowserServices> serviceReference = context.getServiceReference(ProjectBrowserServices.class);
+		if(serviceReference != null) {
+			listener = new OpenEditorListener(services);
+			ProjectBrowserServices service = (ProjectBrowserServices) context.getService(serviceReference);
+			service.addListener(listener);
+		}
+			
 		context.addServiceListener(new ServiceListener() {	
 			@Override
 			public void serviceChanged(ServiceEvent event) {
 				ProjectBrowserServices service = (ProjectBrowserServices) context.getService(event.getServiceReference());
 				if(event.getType() == ServiceEvent.REGISTERED) {
-					listener = new OpenEditorListener(services);
-					service.addListener(listener);
+					if(listener == null) {
+						listener = new OpenEditorListener(services);
+						service.addListener(listener);
+					}
 				}
 			}
 		}, "(objectClass="+ProjectBrowserServices.class.getName()+")");

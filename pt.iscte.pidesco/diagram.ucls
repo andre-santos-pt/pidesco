@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.2" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <enumeration id="1" language="java" name="pt.iscte.pidesco.extensibility.PidescoExtensionPoint" 
+    project="pt.iscte.pidesco" file="/pt.iscte.pidesco/src/pt/iscte/pidesco/extensibility/PidescoExtensionPoint.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="178" width="188" x="183" y="258"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <interface id="2" language="java" name="pt.iscte.pidesco.extensibility.PidescoTool" project="pt.iscte.pidesco" 
+    file="/pt.iscte.pidesco/src/pt/iscte/pidesco/extensibility/PidescoTool.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="52" width="120" x="312" y="578"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="3" language="java" name="pt.iscte.pidesco.extensibility.PidescoView" project="pt.iscte.pidesco" 
+    file="/pt.iscte.pidesco/src/pt/iscte/pidesco/extensibility/PidescoView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="52" width="307" x="547" y="336"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="4" language="java" name="pt.iscte.pidesco.internal.AbstractPidescoView" project="pt.iscte.pidesco" 
+    file="/pt.iscte.pidesco/src/pt/iscte/pidesco/internal/AbstractPidescoView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="718" y="677"/>    
+    <display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="false">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <classifier-display autosize="true" stereotype="false" package="false" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="false">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
