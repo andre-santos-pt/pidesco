@@ -250,6 +250,5 @@ public class ProjectBrowserView implements PidescoView {
 			}
 		});
 	}
-
 	
 }

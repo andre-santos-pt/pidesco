@@ -30,6 +30,7 @@ import org.osgi.framework.BundleException;
 import pt.iscte.pidesco.extensibility.PidescoExtensionPoint;
 import pt.iscte.pidesco.extensibility.PidescoServices;
 import pt.iscte.pidesco.extensibility.PidescoTool;
+import pt.iscte.pidesco.extensibility.PidescoView;
 import pt.iscte.pidesco.internal.PidescoActivator.ViewComponent;
 
 public class AbstractPidescoView extends ViewPart implements ISizeProvider {
@@ -102,7 +103,7 @@ public class AbstractPidescoView extends ViewPart implements ISizeProvider {
 			IConfigurationElement c = ext.getConfigurationElements()[0];
 
 			if(c.getAttribute("view").equals(vcomponent.viewId)) {
-				String contributor = ext.getContributor().getName();
+				String pluginId = ext.getContributor().getName();
 				final String toolName = ext.getLabel();
 				try {
 					final PidescoTool tool = (PidescoTool) c.createExecutableExtension("class");
@@ -112,18 +113,17 @@ public class AbstractPidescoView extends ViewPart implements ISizeProvider {
 							tool.run(isChecked());
 						}
 					};
-
 					action.setText(toolName);
-					action.setToolTipText(c.getAttribute("description") + "\n" + "Contributor: " + contributor);
+					action.setToolTipText(c.getAttribute("description") + "\n" + "Contributor: " + pluginId);
 					String iconPath = IMAGES_FLODER_PATH + c.getAttribute("icon");
-					ImageDescriptor icon = PidescoActivator.imageDescriptorFromPlugin(contributor, iconPath);
+					ImageDescriptor icon = PidescoActivator.imageDescriptorFromPlugin(pluginId, iconPath);
 					if(icon != null)
 						action.setImageDescriptor(icon);
 
 					manager.add(action);
 				}
-				catch (CoreException e) {
-					e.printStackTrace();
+				catch(CoreException e) {
+					System.err.println("could not create instance of class " + c.getAttribute("class") + " included in the extension of plugin " + pluginId);
 					continue;
 				}
 			}

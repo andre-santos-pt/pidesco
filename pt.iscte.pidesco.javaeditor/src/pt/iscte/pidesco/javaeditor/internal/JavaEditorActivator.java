@@ -34,7 +34,6 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 	private BundleContext context;
 	private ProjectBrowserListener listener;
 	private Set<JavaEditorListener> listeners;
-//	private ProjectBrowserServices browser;
 	private JavaEditorServices services;
 	private ISelectionListener selectionListener;
 	
@@ -108,6 +107,9 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 						listener = new OpenEditorListener(services);
 						service.addListener(listener);
 					}
+				}
+				else if(event.getType() == ServiceEvent.UNREGISTERING) {
+					listener = null;
 				}
 			}
 		}, "(objectClass="+ProjectBrowserServices.class.getName()+")");

@@ -91,8 +91,15 @@ public class PidescoActivator extends AbstractUIPlugin {
 			String viewId = viewExtension.getUniqueIdentifier();
 			String viewTitle = viewExtension.getLabel();
 			
+			PidescoView view = null;
 			IConfigurationElement comp = viewExtension.getConfigurationElements()[0];
-			PidescoView c = (PidescoView) comp.createExecutableExtension("class");
+			try {
+				view = (PidescoView) comp.createExecutableExtension("class");
+			}
+			catch(CoreException e) {
+				System.err.println("could not create instance of class " + comp.getAttribute("class") + " included in the extension of plugin " + pluginId);
+				continue;
+			}
 			String iconPath = PidescoServicesImpl.IMAGES_FOLDER + "/" + comp.getAttribute("icon");
 			ImageDescriptor icon = null;
 			if(iconPath != null && !iconPath.isEmpty()) {
@@ -104,7 +111,7 @@ public class PidescoActivator extends AbstractUIPlugin {
 				}
 			}
 				
-			ViewComponent vc = new ViewComponent(c, pluginId, viewId, viewTitle, icon);
+			ViewComponent vc = new ViewComponent(view, pluginId, viewId, viewTitle, icon);
 			components.put(viewId, vc);
 		}
 	}
