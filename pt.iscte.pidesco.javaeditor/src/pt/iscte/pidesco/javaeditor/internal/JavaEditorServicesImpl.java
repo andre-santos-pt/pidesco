@@ -255,7 +255,8 @@ public class JavaEditorServicesImpl implements JavaEditorServices {
 	public void addAnnotation(File file, AnnotationType type, String text, int offset, int length) {
 		Assert.isNotNull(file, "file cannot be null");
 
-		openFile(file);
+		if(!file.equals(getOpenedFile()))
+			openFile(file);
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		IEditorPart part = page.getActiveEditor();
 		IEditorInput input = part.getEditorInput();

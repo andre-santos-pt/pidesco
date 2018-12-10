@@ -98,6 +98,7 @@ public class PidescoActivator extends AbstractUIPlugin {
 			}
 			catch(CoreException e) {
 				System.err.println("could not create instance of class " + comp.getAttribute("class") + " included in the extension of plugin " + pluginId);
+				e.printStackTrace();
 				continue;
 			}
 			String iconPath = PidescoServicesImpl.IMAGES_FOLDER + "/" + comp.getAttribute("icon");

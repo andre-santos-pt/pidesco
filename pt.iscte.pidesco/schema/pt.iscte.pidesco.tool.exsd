@@ -6,7 +6,7 @@
          <meta.schema plugin="pt.iscte.pidesco" id="pt.iscte.pidesco.tool" name="Pidesco Tool"/>
       </appinfo>
       <documentation>
-         A tool in the toolbar of a certain Pidesco view. 
+         A tool in the toolbar of a certain Pidesco view.
       </documentation>
    </annotation>
 
@@ -51,6 +51,11 @@
    </element>
 
    <element name="tool">
+      <annotation>
+         <documentation>
+            Each of these elements represents a tool that is place at a given view (using its id). Plugins may use this extension to contribute with tools to their own view.
+         </documentation>
+      </annotation>
       <complexType>
          <attribute name="class" type="string" use="required">
             <annotation>
@@ -72,7 +77,7 @@
          <attribute name="icon" type="string">
             <annotation>
                <documentation>
-                  Tool icon, used in the tool bars.
+                  Tool icon, used in the tool bars. The icon path should be relative to an &quot;images&quot; folder on the plugin root.
                </documentation>
             </annotation>
          </attribute>
