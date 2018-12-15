@@ -237,16 +237,15 @@ public class JavaEditorServicesImpl implements JavaEditorServices {
 
 	
 	private String readSource(File file) {
-		StringBuilder src = new StringBuilder();
 		try {
 			Scanner scanner = new Scanner(file);
-			while(scanner.hasNextLine())
-				src.append(scanner.nextLine()).append('\n');
+			String src = scanner.useDelimiter("\\A").next();
 			scanner.close();
+			return src;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			return "";
 		}
-		return src.toString();
 	}
 
 
