@@ -5,7 +5,6 @@ import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserListener;
 import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserServices;
 
 public class ProjectBrowserServicesImpl implements ProjectBrowserServices {
-
 	
 	public PackageElement getRootPackage() {
 		return ProjectBrowserActivator.getInstance().getRoot();

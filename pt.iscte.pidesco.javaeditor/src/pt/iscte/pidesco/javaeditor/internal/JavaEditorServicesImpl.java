@@ -262,7 +262,7 @@ public class JavaEditorServicesImpl implements JavaEditorServices {
 		IAnnotationModel amodel = ((ITextEditor) part).getDocumentProvider().getAnnotationModel(input);
 		Annotation ann = new Annotation(false);
 		ann.setText(text);
-		ann.setType(type.ID);
+		ann.setType(type.id);
 		amodel.addAnnotation(ann, new Position(offset, length));
 	}
 

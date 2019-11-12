@@ -10,15 +10,18 @@
  ******************************************************************************/
 package pt.iscte.pidesco.javaeditor.internal;
 
-import org.eclipse.jface.text.rules.IWordDetector;
+import org.eclipse.swt.SWT;
 
-public class IntLiteralDetector implements IWordDetector {
-	
-	public boolean isWordStart(char c) {
-		return Character.isDigit(c) || c == '-';
-	}
+public enum TokenStyle {
+	NORMAL(SWT.NORMAL),
+	BOLD(SWT.BOLD),
+	ITALIC(SWT.ITALIC),
+	STRIKETHROUGH(536870912),
+	UNDERLINE(1073741824);
 
-	public boolean isWordPart(char c) {
-		return Character.isDigit(c);
+	public final int style;
+
+	TokenStyle(int style) {
+		this.style = style;
 	}
 }

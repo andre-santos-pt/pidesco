@@ -7,7 +7,7 @@ import pt.iscte.pidesco.projectbrowser.model.ClassElement;
 import pt.iscte.pidesco.projectbrowser.model.SourceElement;
 import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserListener;
 
-public class OpenEditorListener extends ProjectBrowserListener.Adapter {
+public class OpenEditorListener implements ProjectBrowserListener {
 
 	private JavaEditorServices services;
 	
@@ -18,7 +18,7 @@ public class OpenEditorListener extends ProjectBrowserListener.Adapter {
 	@Override
 	public void doubleClick(SourceElement element) {
 		if(element instanceof ClassElement) {
-			File f = ((ClassElement) element).getFile();
+			File f = element.getFile();
 			services.openFile(f);
 		}
 	}

@@ -8,7 +8,7 @@
  * Contributors:
  *     Andre L Santos - developer
  ******************************************************************************/
-package pt.iscte.pidesco.javaeditor.internal;
+package pt.iscte.pidesco.javaeditor.internal.scanner.rule;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.text.rules.ICharacterScanner;
@@ -19,11 +19,11 @@ import org.eclipse.jface.text.rules.Token;
 public class IntRule implements IRule {
 
 	/** Internal setting for the un-initialized column constraint */
-	protected static final int UNDEFINED= -1;
+	protected static final int UNDEFINED = -1;
 	/** The token to be returned when this rule is successful */
 	protected IToken fToken;
 	/** The column constraint */
-	protected int fColumn= UNDEFINED;
+	protected int fColumn = UNDEFINED;
 
 	/**
 	 * Creates a rule which will return the specified
@@ -33,7 +33,7 @@ public class IntRule implements IRule {
 	 */
 	public IntRule(IToken token) {
 		Assert.isNotNull(token);
-		fToken= token;
+		fToken = token;
 	}
 
 	/**
@@ -46,8 +46,8 @@ public class IntRule implements IRule {
 	 */
 	public void setColumnConstraint(int column) {
 		if (column < 0)
-			column= UNDEFINED;
-		fColumn= column;
+			column = UNDEFINED;
+		fColumn = column;
 	}
 
 	/*
@@ -60,7 +60,7 @@ public class IntRule implements IRule {
 		if (Character.isDigit(c) || c == '-') {
 			if (fColumn == UNDEFINED || (fColumn == scanner.getColumn() - 1)) {
 				do {
-					c= scanner.read();
+					c = scanner.read();
 					if(i == 1 && first == '-' && !Character.isDigit(c)) {
 						scanner.unread();
 						scanner.unread();

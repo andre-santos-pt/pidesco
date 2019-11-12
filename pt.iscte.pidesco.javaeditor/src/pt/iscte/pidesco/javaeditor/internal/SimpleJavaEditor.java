@@ -87,7 +87,7 @@ public class SimpleJavaEditor extends TextEditor {
 		IAnnotationModel amodel = getDocumentProvider().getAnnotationModel(getEditorInput());
 		Iterator<Annotation> it = amodel.getAnnotationIterator();
 		while(it.hasNext()) {
-			Annotation a = (Annotation) it.next();
+			Annotation a = it.next();
 			amodel.removeAnnotation(a);
 		}
 	}

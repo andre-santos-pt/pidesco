@@ -102,7 +102,6 @@ public class NonRuleBasedDamagerRepairer
 						partition.getOffset() + partition.getLength(),
 						end);
 				return new Region(start, end - start);
-
 			} catch (BadLocationException x) {
 			}
 		}
