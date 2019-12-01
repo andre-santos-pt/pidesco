@@ -20,7 +20,6 @@ public interface JavaEditorServices {
 	/**
 	 * Opens a file in the editor.
 	 * @param file (non-null) file to open
-	 * @return
 	 */
 	void openFile(File file);
 	
@@ -28,9 +27,7 @@ public interface JavaEditorServices {
 	/**
 	 * Saves the state of the current file
 	 * @param file (non-null) file to open
-	 * @return
 	 */
-	
 	void saveFile(File file);
 	
 	
@@ -38,9 +35,7 @@ public interface JavaEditorServices {
 	 * Sets the text of a file in the editor.
 	 * @param file (non-null) file to open
 	 * @param text to insert on file
-	 * @return
 	 */
-	
 	void setText(File file, String text);
 	
 	/**
@@ -48,7 +43,6 @@ public interface JavaEditorServices {
 	 * @param file (non-null) file to open
 	 * @return an instance of ITextSelection
 	 */
-	
 	ITextSelection getTextSelected(File file);
 	
 
