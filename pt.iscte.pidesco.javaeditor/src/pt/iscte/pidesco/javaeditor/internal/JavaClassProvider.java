@@ -15,6 +15,7 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jface.text.rules.FastPartitioner;
 import org.eclipse.ui.editors.text.FileDocumentProvider;
+import pt.iscte.pidesco.javaeditor.internal.scanner.JavaCodePartitionScanner;
 
 
 public class JavaClassProvider extends FileDocumentProvider {

@@ -53,8 +53,8 @@ public class ProjectBrowserView implements PidescoView {
 	
 	public ProjectBrowserView() {
 		instance = this;
-		filtersMap = new HashMap<String, ProjectBrowserView.Filter>();
-		activeFilters = new HashSet<String>();
+		filtersMap = new HashMap<>();
+		activeFilters = new HashSet<>();
 		loadFilters();
 		invisibleRoot = ProjectBrowserActivator.getInstance().getRoot();
 	}
@@ -106,6 +106,7 @@ public class ProjectBrowserView implements PidescoView {
 	public void createContents(Composite viewArea, Map<String, Image> images) {
 		packageIcon = images.get("package.gif");
 		classIcon = images.get("class.gif");
+
 		tree = new TreeViewer(viewArea, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		tree.setContentProvider(new ViewContentProvider());
 		tree.setLabelProvider(new ViewLabelProvider());

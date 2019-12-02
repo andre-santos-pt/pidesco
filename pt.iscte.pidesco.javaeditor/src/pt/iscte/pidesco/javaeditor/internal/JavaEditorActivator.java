@@ -21,7 +21,6 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
-
 import pt.iscte.pidesco.extensibility.PidescoServices;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorListener;
 import pt.iscte.pidesco.javaeditor.service.JavaEditorServices;
@@ -50,7 +49,7 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 	}
 
 	public JavaEditorActivator() {
-		listeners = new HashSet<JavaEditorListener>();
+		listeners = new HashSet<>();
 	}
 
 	public void addListener(JavaEditorListener l) {
@@ -106,11 +105,11 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 		ServiceReference<ProjectBrowserServices> serviceReference = context.getServiceReference(ProjectBrowserServices.class);
 		if(serviceReference != null) {
 			listener = new OpenEditorListener(services);
-			ProjectBrowserServices service = (ProjectBrowserServices) context.getService(serviceReference);
+			ProjectBrowserServices service = context.getService(serviceReference);
 			service.addListener(listener);
 		}
-			
-		context.addServiceListener(new ServiceListener() {	
+
+		context.addServiceListener(new ServiceListener() {
 			@Override
 			public void serviceChanged(ServiceEvent event) {
 				ProjectBrowserServices service = (ProjectBrowserServices) context.getService(event.getServiceReference());
@@ -152,11 +151,10 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 	public void partActivated(IWorkbenchPartReference partRef) {
 		if(selectionListener == null) {
 			selectionListener = new ISelectionListener() {
-
 				@Override
 				public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 					if(part instanceof IEditorPart && ((IEditorPart) part).getEditorSite().getId().equals(SimpleJavaEditor.EDITOR_ID)) {
-						IEditorPart editor = (IEditorPart) part; 
+						IEditorPart editor = (IEditorPart) part;
 						IEditorInput input = editor.getEditorInput();
 						String path = ((FileStoreEditorInput) input).getURI().getPath();
 						File f = new File(path);

@@ -2,6 +2,8 @@ package pt.iscte.pidesco.javaeditor.service;
 
 import java.io.File;
 
+import pt.iscte.pidesco.projectbrowser.service.ProjectBrowserListener;
+
 /**
  * Represents a listener for events in the Java Editor
  */
@@ -11,19 +13,19 @@ public interface JavaEditorListener {
 	 * File open event.
 	 * @param file (non-null) reference to the opened file
 	 */
-	void fileOpened(File file);
+	default void fileOpened(File file) { }
 
 	/**
 	 * File save event.
 	 * @param file (non-null) reference to the saved file
 	 */
-	void fileSaved(File file);
+	default void fileSaved(File file) { }
 
 	/**
 	 * File close event.
 	 * @param file (non-null) reference to the closed file
 	 */
-	void fileClosed(File file);
+	default void fileClosed(File file) { }
 
 	/**
 	 * File selection changed event.
@@ -32,31 +34,15 @@ public interface JavaEditorListener {
 	 * @param offset offset of the selection (index of the first selected character)
 	 * @param length length of the selection
 	 */
-	void selectionChanged(File file, String text, int offset, int length);
+	default void selectionChanged(File file, String text, int offset, int length) { }
+
 
 	/**
-	 * Listener adapter that for each event does nothing.
+	 * Interface adapter for convenience. Default implementations do nothing.
+	 *
+	 * @deprecated use the interface directly.
 	 */
-	public class Adapter implements JavaEditorListener {
+	@Deprecated
+	class Adapter implements JavaEditorListener { }
 
-		@Override
-		public void fileOpened(File file) {
-
-		}
-
-		@Override
-		public void fileSaved(File file) {
-
-		}
-
-		@Override
-		public void fileClosed(File file) {
-
-		}
-
-		@Override
-		public void selectionChanged(File file, String text, int offset, int length) {
-
-		}
-	}
 }

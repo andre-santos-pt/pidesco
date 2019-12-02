@@ -26,7 +26,7 @@ public class PackageFocusFilter implements ProjectBrowserFilter {
 		final PidescoServices pidescoServices = context.getService(ref);	
 
 		services = JavaEditorActivator.getInstance().getServices();
-		services.addListener(new JavaEditorListener.Adapter() {
+		services.addListener(new JavaEditorListener() {
 			@Override
 			public void fileOpened(File f) {
 				file = f;

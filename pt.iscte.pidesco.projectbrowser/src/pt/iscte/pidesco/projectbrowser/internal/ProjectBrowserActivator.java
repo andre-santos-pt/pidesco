@@ -27,7 +27,7 @@ public class ProjectBrowserActivator implements BundleActivator {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		instance = this;
-		listeners = new HashSet<ProjectBrowserListener>();
+		listeners = new HashSet<>();
 		service = context.registerService(ProjectBrowserServices.class, new ProjectBrowserServicesImpl(), null);
 
 		ServiceReference<PidescoServices> ref = context.getServiceReference(PidescoServices.class);

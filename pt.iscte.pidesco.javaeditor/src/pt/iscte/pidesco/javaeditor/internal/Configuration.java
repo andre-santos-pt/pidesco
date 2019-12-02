@@ -22,6 +22,9 @@ import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.IAnnotationHover;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.jface.text.source.SourceViewerConfiguration;
+import pt.iscte.pidesco.javaeditor.internal.scanner.JavaCodePartitionScanner;
+import pt.iscte.pidesco.javaeditor.internal.scanner.JavaCodeScanner;
+import pt.iscte.pidesco.javaeditor.internal.scanner.JavaCommentsPartitionScanner;
 
 
 public class Configuration extends SourceViewerConfiguration {
@@ -31,9 +34,8 @@ public class Configuration extends SourceViewerConfiguration {
 		return new String[] {
 				IDocument.DEFAULT_CONTENT_TYPE,
 				JavaCodePartitionScanner.JAVA_COMMENT};
-		//				JavaCodePartitionScanner.JAVA_CODE };
+//				JavaCodePartitionScanner.JAVA_CODE };
 	}
-
 
 //	protected JavaCodeScanner getTagScanner() {
 //		if (tagScanner == null) {
@@ -46,30 +48,27 @@ public class Configuration extends SourceViewerConfiguration {
 	@Override
 	public IAnnotationHover getAnnotationHover(ISourceViewer sourceViewer) {		
 		return new IAnnotationHover() {
-
 			@Override
 			public String getHoverInfo(ISourceViewer sourceViewer, int lineNumber) {
 				IDocument doc = sourceViewer.getDocument();
-				String ret = "";
-				for(Iterator<Annotation> it = sourceViewer.getAnnotationModel().getAnnotationIterator(); it.hasNext(); ) {
-					Annotation ann = (Annotation) it.next();
-					int offset = sourceViewer.getAnnotationModel().getPosition(ann).offset;					
+				StringBuilder ret = new StringBuilder();
+				for (Iterator<Annotation> it = sourceViewer.getAnnotationModel().getAnnotationIterator(); it.hasNext(); ) {
+					Annotation ann = it.next();
+					int offset = sourceViewer.getAnnotationModel().getPosition(ann).offset;
 					try {
-						//	ret += offset + " .. " + doc.getLineOffset(lineNumber) + " .. " + doc.getLineOffset(lineNumber+1);
-						if(offset >= doc.getLineOffset(lineNumber) && 
+//						ret += offset + " .. " + doc.getLineOffset(lineNumber) + " .. " + doc.getLineOffset(lineNumber+1);
+						if(offset >= doc.getLineOffset(lineNumber) &&
 								(lineNumber == doc.getNumberOfLines()-1 || offset < doc.getLineOffset(lineNumber+1))) {
-							ret += ann.getText();
-							//							if(it.hasNext())
-							//								ret += "\n";
+							ret.append(ann.getText());
+//							if(it.hasNext())
+//								ret += "\n";
 							break;
 						}
 					} catch (BadLocationException e) {
 						e.printStackTrace();
 					}
-
-
 				}
-				return ret;
+				return ret.toString();
 			}
 		};
 	}
@@ -85,8 +84,7 @@ public class Configuration extends SourceViewerConfiguration {
 		reconciler.setDamager(dr2, IDocument.DEFAULT_CONTENT_TYPE);
 		reconciler.setRepairer(dr2, IDocument.DEFAULT_CONTENT_TYPE);
 
-		NonRuleBasedDamagerRepairer ndr =
-			new NonRuleBasedDamagerRepairer(new TextAttribute(TokenColor.COMMENT.color));
+		NonRuleBasedDamagerRepairer ndr = new NonRuleBasedDamagerRepairer(new TextAttribute(TokenColor.COMMENT.color));
 		reconciler.setDamager(ndr, JavaCodePartitionScanner.JAVA_COMMENT);
 		reconciler.setRepairer(ndr, JavaCodePartitionScanner.JAVA_COMMENT);
 
