@@ -2,6 +2,7 @@ package pt.iscte.pidesco.javaeditor.internal;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
@@ -36,6 +37,8 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 	private Set<JavaEditorListener> listeners;
 	private JavaEditorServices services;
 	private ISelectionListener selectionListener;
+
+	private File activeFile = null;
 	
 	
 	public static JavaEditorActivator getInstance() {
@@ -61,11 +64,20 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 	}
 
 	void notityOpenFile(File file) {
+		// Ensures that the event will be fired only once for the same file
+		if (isActiveFile(file)) {
+			return;
+		} else {
+			activeFile = file;
+		}
+
 		for(JavaEditorListener l : listeners)
 			l.fileOpened(file);
 	}
 
 	void notityClosedFile(File file) {
+		activeFile = null;
+
 		for(JavaEditorListener l : listeners)
 			l.fileClosed(file);
 	}
@@ -129,8 +141,11 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 		IEditorPart part = (IEditorPart) partRef.getPart(true);
 		IEditorInput input = part.getEditorInput();
 		String path = ((FileStoreEditorInput) input).getURI().getPath();
-		File f = new File(path);
-		return f;
+		return new File(path);
+	}
+
+	private boolean isActiveFile(File file) {
+		return Objects.equals(activeFile, file);
 	}
 	
 	@Override
@@ -153,14 +168,12 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().addSelectionListener(selectionListener);
 		}
 	}
-	
+
+	/* Called whent the active tab changes */
 	@Override
 	public void partBroughtToTop(IWorkbenchPartReference partRef) {
-		if(partRef.getId().equals(SimpleJavaEditor.EDITOR_ID)) {
-			File f = getFile(partRef);
-			notityOpenFile(f);
-		}
-			
+		if(partRef.getId().equals(SimpleJavaEditor.EDITOR_ID))
+			notityOpenFile(getFile(partRef));
 	}
 
 	@Override
@@ -174,9 +187,11 @@ public class JavaEditorActivator implements BundleActivator, IPartListener2 {
 		
 	}
 
+	/* Called when a new tab is opened */
 	@Override
 	public void partOpened(IWorkbenchPartReference partRef) {
-		
+		if(partRef.getId().equals(SimpleJavaEditor.EDITOR_ID))
+			notityOpenFile(getFile(partRef));
 	}
 
 	@Override

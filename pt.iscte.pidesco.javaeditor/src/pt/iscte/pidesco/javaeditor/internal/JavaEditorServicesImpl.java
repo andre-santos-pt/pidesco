@@ -70,8 +70,8 @@ public class JavaEditorServicesImpl implements JavaEditorServices {
 			IFileStore fileStore = EFS.getLocalFileSystem().getStore(file.toURI());
 			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 			try {
+				// Will fire the appropriate events (fileOpened) when the tab is opened in the editor
 				IDE.openEditorOnFileStore(page, fileStore);
-				JavaEditorActivator.getInstance().notityOpenFile(file);
 			} catch (PartInitException e) {
 			}
 		} 
